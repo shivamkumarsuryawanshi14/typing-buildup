@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Buildup - Advanced Typing Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Light Mode Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #efefef;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --text-muted: #999999;
+            --border-color: #e0e0e0;
+
+            /* Purple Theme */
+            --primary-color: #a855f7;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-tertiary: #3a3a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-muted: #808080;
+            --border-color: #404040;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Theme Selector */
+        .theme-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            animation: slideDown 0.6s ease;
+        }
+
+        .theme-toggle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            background: var(--bg-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+        }
+
+        .theme-toggle.active {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-top: 2rem;
+            animation: slideDown 0.6s ease;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            letter-spacing: -1px;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .tagline {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            animation: fadeIn 0.8s ease;
+        }
+
+        /* Start Screen */
+        .start-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 600px;
+            gap: 2rem;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .start-content {
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .start-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            animation: slideUp 0.6s ease;
+        }
+
+        .start-content p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 0.5rem;
+            animation: slideUp 0.7s ease;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+            width: 100%;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            animation: slideUp 0.6s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(168, 85, 247, 0.25);
+        }
+
+        .feature-card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .feature-card:nth-child(2) .feature-card-icon {
+            animation-delay: 0.2s;
+        }
+
+        .feature-card:nth-child(3) .feature-card-icon {
+            animation-delay: 0.4s;
+        }
+
+        .feature-card:nth-child(4) .feature-card-icon {
+            animation-delay: 0.6s;
+        }
+
+        .feature-card-text {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 14px 40px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: capitalize;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.5s ease;
+            z-index: 1;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), #d946ef);
+            color: white;
+            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+            position: relative;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(168, 85, 247, 0.6);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--primary-color);
+        }
+
+        /* Mini Timer - Small floating widget on side */
+        .mini-timer {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--primary-color);
+            border-radius: 50px;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.3);
+            z-index: 50;
+            animation: slideDown 0.5s ease;
+        }
+
+        .mini-timer-icon {
+            font-size: 1rem;
+        }
+
+        .mini-timer-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: var(--primary-color);
+            min-width: 50px;
+        }
+
+        .mini-timer.warning .mini-timer-value {
+            color: var(--warning-color);
+        }
+
+        .mini-timer.danger {
+            animation: timerPulse 0.6s ease infinite;
+        }
+
+        .mini-timer.danger .mini-timer-value {
+            color: var(--danger-color);
+        }
+
+        @keyframes timerPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.08);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mini-timer {
+                top: auto;
+                bottom: 20px;
+                right: 20px;
+                padding: 8px 14px;
+            }
+        }
+
+        /* Sentence Container - Typing Master Style */
+        .sentence-container {
+            background: var(--bg-secondary);
+            border: 3px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 1.5rem;
+            min-height: 200px;
+            max-height: 350px;
+            overflow-y: auto;
+            animation: slideUp 0.6s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.15);
+        }
+
+        .sentence-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--border-color);
+        }
+
+        .sentence-progress-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), #d946ef);
+            width: 0%;
+            transition: width 0.3s ease-out;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+            border-radius: 0 3px 3px 0;
+            z-index: 1;
+        }
+
+        .sentence-display {
+            font-size: 1.4rem;
+            font-family: 'Courier New', monospace;
+            line-height: 1.9;
+            letter-spacing: 0.5px;
+        }
+
+        .char {
+            position: relative;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: var(--text-muted);
+            display: inline-block;
+        }
+
+        .char.correct {
+            color: var(--success-color);
+            animation: charPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .char.incorrect {
+            color: white;
+            background: var(--danger-color);
+            border-radius: 3px;
+            animation: charShake 0.35s ease;
+        }
+
+        .char.current {
+            background: var(--primary-color);
+            color: white;
+            border-radius: 3px;
+            animation: cursorBlink 1s ease infinite;
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.7);
+        }
+
+        @keyframes charPop {
+            0% {
+                transform: scale(1.6) translateY(-8px);
+                color: var(--primary-color);
+            }
+            50% {
+                transform: scale(1.2) translateY(-4px);
+            }
+            100% {
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes charShake {
+            0%, 100% {
+                transform: translateX(0) scale(1);
+            }
+            25% {
+                transform: translateX(-4px) scale(1.1);
+            }
+            75% {
+                transform: translateX(4px) scale(1.1);
+            }
+        }
+
+        @keyframes cursorBlink {
+            0%, 100% {
+                box-shadow: 0 0 12px rgba(168, 85, 247, 0.7);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(168, 85, 247, 1);
+                transform: scale(1.15);
+            }
+        }
+
+        /* Typing Input Box - Below Sentence */
+        .typing-box-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* Input */
+        .input-container {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        #typingInput {
+            width: 100%;
+            padding: 18px 20px;
+            font-size: 1.05rem;
+            background: var(--bg-secondary);
+            border: 3px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        #typingInput:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+            background: var(--bg-tertiary);
+            transform: translateY(-2px);
+        }
+
+        #typingInput.input-error {
+            animation: inputShake 0.3s ease;
+            border-color: var(--danger-color);
+        }
+
+        @keyframes inputShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        #typingInput::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Results Screen */
+        .results-screen {
+            animation: fadeIn 0.6s ease;
+        }
+
+        .results-title {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            animation: celebrationBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes celebrationBounce {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(-40px);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1.1) translateY(5px);
+            }
+            100% {
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .result-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            animation: slideUp 0.6s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .result-card:hover::before {
+            opacity: 1;
+        }
+
+        .result-card:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .result-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .result-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .result-card:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .result-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(168, 85, 247, 0.3);
+        }
+
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        .result-value {
+            font-size: 2.8rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            animation: slideUp 0.6s ease;
+        }
+
+        .result-unit {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .results-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideRight {
+            0%, 100% {
+                transform: translateX(-100%);
+            }
+            50% {
+                transform: translateX(100%);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+            }
+        }
+
+        @keyframes charPulse {
+            0%, 100% {
+                box-shadow: 0 6px 16px rgba(168, 85, 247, 0.4);
+            }
+            50% {
+                box-shadow: 0 6px 25px rgba(168, 85, 247, 0.7);
+            }
+        }
+
+        @keyframes correctChar {
+            from {
+                transform: scale(1.2) rotate(5deg);
+            }
+            to {
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-5px);
+            }
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        @keyframes statPulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 12px;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .sentence-container {
+                padding: 1.5rem;
+                min-height: 300px;
+            }
+
+            .sentence-display {
+                font-size: 1.2rem;
+                gap: 5px;
+                line-height: 1.9;
+            }
+
+            .word {
+                padding: 4px 6px;
+            }
+
+            .result-value {
+                font-size: 2rem;
+            }
+
+            .results-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .theme-selector {
+                position: static;
+                justify-content: center;
+                margin-bottom: 1rem;
+            }
+
+            .time-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Time Selector Screen */
+        .time-selector-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 600px;
+            gap: 2rem;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .time-selector-content {
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .time-selector-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            animation: slideUp 0.6s ease;
+        }
+
+        .time-selector-content p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+            animation: slideUp 0.7s ease;
+        }
+
+        .time-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .time-option-btn {
+            padding: 20px 15px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .time-option-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .time-option-btn:hover::before {
+            left: 100%;
+        }
+
+        .time-option-btn:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.25);
+        }
+
+        .time-option-btn.active {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), #d946ef);
+            color: white;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
+        }
+
+        .time-option-icon {
+            font-size: 2rem;
+        }
+
+        .time-option-label {
+            font-size: 1rem;
+        }
+
+        .time-option-subtext {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .custom-time-input {
+            display: none;
+            margin: 2rem 0;
+            text-align: center;
+            gap: 1rem;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .custom-time-input.show {
+            display: flex;
+        }
+
+        .custom-time-input input {
+            width: 150px;
+            padding: 12px;
+            font-size: 1.1rem;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .custom-time-input input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+        }
+
+        .custom-time-input label {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Selector -->
+    <div class="theme-selector">
+        <button class="theme-toggle active" id="darkModeToggle" title="Toggle Dark/Light Mode">
+            🌙
+        </button>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">⌨️ Typing Buildup</div>
+            <p class="tagline">Build Your Typing Speed From Zero to Hero</p>
+        </header>
+
+        <!-- Time Selector Screen -->
+        <div id="timeSelectorScreen" class="time-selector-screen">
+            <div class="time-selector-content">
+                <h2>⏱️ Choose Your Time Limit</h2>
+                <p>Select how long you want to type, or set a custom time duration.</p>
+                
+                <div class="time-options">
+                    <button class="time-option-btn" onclick="selectTime(60)">
+                        <span class="time-option-icon">⚡</span>
+                        <span class="time-option-label">1 Minute</span>
+                        <span class="time-option-subtext">Quick test</span>
+                    </button>
+                    <button class="time-option-btn" onclick="selectTime(300)">
+                        <span class="time-option-icon">🔥</span>
+                        <span class="time-option-label">5 Minutes</span>
+                        <span class="time-option-subtext">Standard</span>
+                    </button>
+                    <button class="time-option-btn" onclick="selectTime(600)">
+                        <span class="time-option-icon">💪</span>
+                        <span class="time-option-label">10 Minutes</span>
+                        <span class="time-option-subtext">Challenge</span>
+                    </button>
+                    <button class="time-option-btn" onclick="toggleCustomTime()">
+                        <span class="time-option-icon">⚙️</span>
+                        <span class="time-option-label">Custom</span>
+                        <span class="time-option-subtext">Your choice</span>
+                    </button>
+                </div>
+
+                <div class="custom-time-input" id="customTimeInput">
+                    <label for="customMinutes">Enter time in minutes:</label>
+                    <input type="number" id="customMinutes" min="1" max="30" placeholder="e.g., 3" value="3">
+                    <button class="btn btn-primary" onclick="selectCustomTime()">Set Time & Start</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start Screen -->
+        <div id="startScreen" class="start-screen">
+            <div class="start-content">
+                <h2>🚀 Ready to Build Your Speed?</h2>
+                <p>Type long, challenging sentences to build your typing speed progressively. Watch your performance improve in real-time!</p>
+                
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="feature-card-icon">⚡</div>
+                        <div class="feature-card-text">Instant Speed</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-icon">🎯</div>
+                        <div class="feature-card-text">Live Accuracy</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-icon">✨</div>
+                        <div class="feature-card-text">Animations</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-card-icon">📊</div>
+                        <div class="feature-card-text">Real-Time Stats</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="document.getElementById('startScreen').classList.add('hidden'); document.getElementById('timeSelectorScreen').classList.remove('hidden');">Start Test Now</button>
+            </div>
+        </div>
+
+        <!-- Test Screen -->
+        <div id="testScreen" class="hidden">
+            <div class="mini-timer" id="miniTimer">
+                <span class="mini-timer-icon">⏱️</span>
+                <span class="mini-timer-value" id="timeDisplay">0s</span>
+            </div>
+
+            <div class="sentence-container">
+                <div class="sentence-progress-fill" id="progressFill"></div>
+                <div class="sentence-display" id="sentenceDisplay"></div>
+            </div>
+
+            <div class="input-container">
+                <label class="typing-box-label" for="typingInput">✍️ Type Here</label>
+                <input 
+                    type="text" 
+                    id="typingInput" 
+                    placeholder="Click here and start typing..."
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="results-screen hidden">
+            <div class="results-title">🎉 Congratulations!</div>
+
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-label">⚡ Speed</div>
+                    <div class="result-value" id="finalWPM">0</div>
+                    <div class="result-unit">WPM</div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-label">🎯 Accuracy</div>
+                    <div class="result-value" id="finalAccuracy">0</div>
+                    <div class="result-unit">%</div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-label">⏱️ Time</div>
+                    <div class="result-value" id="finalTime">0</div>
+                    <div class="result-unit">seconds</div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-label">✅ Words</div>
+                    <div class="result-value" id="finalCorrect">0</div>
+                    <div class="result-unit">correct</div>
+                </div>
+            </div>
+
+            <div class="results-buttons">
+                <button class="btn btn-primary" onclick="resetTest()">Try Again</button>
+                <button class="btn btn-secondary" onclick="goHome()">Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Typing 2.0 - Extra long, comprehensive paragraphs for advanced practice
+        const sentences = [
+            "The evolution of human civilization has been marked by extraordinary technological breakthroughs that have fundamentally transformed how we live work and communicate with one another across vast distances and diverse cultures.From the invention of the printing press which democratized access to knowledge and information to the development of the internet which connected billions of minds across the globe in an instant these innovations have reshaped society in profound and lasting ways.Today we stand at the threshold of another technological revolution driven by artificial intelligence machine learning and advanced computing systems that promise to unlock new possibilities we could scarcely imagine just a few decades ago.The typewriter itself represented a remarkable leap forward when it was first introduced allowing people to produce written documents with unprecedented speed clarity and professionalism compared to the laborious process of handwriting.As computers replaced typewriters the fundamental skill of typing remained essential though the tools themselves became more sophisticated offering features like spell check formatting and instant editing capabilities.Mastering the art of touch typing where your fingers know the keyboard layout so intimately that you never need to look down represents one of the most valuable skills anyone can develop in our increasingly digital world.",
+            
+            "In the vast landscape of human achievement few skills offer such immediate and tangible benefits as the ability to type quickly and accurately using a standard computer keyboard without constantly glancing down at your fingers.Professional typists who have honed their craft over years of dedicated practice can achieve speeds exceeding one hundred and twenty words per minute while maintaining near perfect accuracy throughout extended typing sessions.This remarkable level of proficiency does not come easily or quickly but rather emerges from countless hours of deliberate practice focused repetition and unwavering commitment to continuous improvement.The neural pathways in your brain that control finger movements and coordination undergo significant restructuring as you practice typing consistently allowing your subconscious mind to take over tasks that once required intense conscious concentration.This phenomenon known as procedural memory formation explains why experienced typists can carry on conversations think about complex topics or even watch television while their fingers continue producing accurate text almost automatically.The journey from beginner to expert typist mirrors many other skill acquisition processes in life requiring patience persistence and a willingness to embrace failure as a necessary component of the learning process.Every mistake you make while typing every moment of frustration when your fingers stumble over unfamiliar key combinations represents valuable feedback that your brain uses to refine and improve future performance.",
+            
+            "The digital transformation sweeping across every industry and sector of the global economy has created unprecedented demand for professionals who possess strong computer literacy and efficient typing capabilities as fundamental workplace competencies.Software engineers who spend countless hours writing and debugging code benefit tremendously from rapid accurate typing that allows their fingers to keep pace with their rapidly evolving thoughts and problem solving processes.Content creators journalists and writers depend heavily on their typing speed to capture creative inspiration and complex ideas before they fade from memory ensuring that valuable insights are preserved and developed into polished written work.Customer service representatives who handle numerous inquiries throughout their workday rely on quick accurate typing to provide timely helpful responses while maintaining high levels of customer satisfaction and professional service quality.Data entry specialists administrative assistants and office workers across countless industries process massive volumes of information daily requiring both speed and precision to complete their responsibilities efficiently and accurately.Even in creative fields like graphic design and video editing professionals often need to communicate through written messages emails and project documentation making typing proficiency valuable across virtually every professional domain imaginable.The universal applicability of strong typing skills across such diverse career paths underscores why investing time and effort into mastering this fundamental competency yields substantial returns throughout your entire professional journey.",
+            
+            "Consider the remarkable neuroplasticity of the human brain which allows us to develop entirely new skills and capabilities throughout our lives regardless of age background or previous experience with similar activities or challenges.When you begin learning to type your brain must coordinate complex signals traveling from your visual cortex which processes what you see on screen through your motor cortex which controls precise finger movements and back again in rapid successive cycles.This intricate neurological choreography happens thousands of times per minute as skilled typists process information make decisions and execute physical movements with remarkable speed and accuracy that would have seemed impossible during their initial learning stages.Scientists who study motor learning and skill acquisition have identified several critical phases that typists progress through including the cognitive phase where conscious thought dominates every action the associative phase where movements become smoother and more coordinated and finally the autonomous phase where typing becomes largely automatic requiring minimal conscious attention.Understanding these developmental stages can help aspiring typists maintain patience and motivation during the challenging early phases when progress might feel slow or frustrating compared to their ultimate goals and aspirations.The transition from conscious effortful typing to smooth automatic performance typically requires extensive practice often spanning many months or even years depending on the intensity and consistency of training efforts invested.However once this transformation occurs typing becomes almost effortless allowing practitioners to focus entirely on the content and meaning of their communication rather than the mechanical process of producing that text.",
+            
+            "Throughout history human beings have continuously sought ways to enhance their productivity efficiency and capability through the development and mastery of new tools techniques and technologies that expand what individuals can accomplish.The keyboard as we know it today evolved through numerous iterations and improvements building upon earlier innovations in typewriter design and ergonomic research to create an interface that balances efficiency comfort and accessibility for users worldwide.The QWERTY layout which dominates keyboards globally despite ongoing debates about its optimal efficiency demonstrates how established standards can persist even when potentially superior alternatives exist simply due to widespread adoption and familiarity.Alternative keyboard layouts like Dvorak and Colemak have been developed with the specific goal of improving typing efficiency by placing frequently used letters in more accessible positions though widespread adoption of these alternatives remains limited compared to traditional QWERTY systems.Regardless of which specific keyboard layout you choose to master the fundamental principles of touch typing remain consistent focusing on proper finger placement minimal unnecessary movement and building strong muscle memory through consistent deliberate practice.The investment of time and effort required to develop genuine typing mastery pays substantial dividends throughout your personal and professional life enabling more efficient communication increased productivity and reduced physical strain compared to inefficient hunt and peck typing methods.As we continue advancing into an increasingly digital future where written communication remains central to human interaction and professional success the value of strong typing skills will likely only increase in importance and relevance.",
+            
+            "The psychological benefits of mastering typing extend far beyond simple productivity gains encompassing improved confidence reduced stress and enhanced cognitive capabilities that can positively impact numerous other areas of personal and professional development.When you can type quickly and accurately without conscious effort your mind becomes free to focus entirely on creative thinking problem solving and generating innovative ideas rather than struggling with the mechanical process of producing written text.This liberation of cognitive resources allows for more fluid thought processes enabling writers programmers and other professionals to maintain their creative flow without frustrating interruptions caused by slow or inaccurate typing that breaks concentration and disrupts thinking patterns.Furthermore the confidence that comes from knowing you can efficiently communicate through written text in professional academic or personal contexts contributes significantly to overall self assurance and reduces anxiety related to written communication tasks.Students who develop strong typing skills early in their academic careers often experience reduced stress during exams essays and other writing intensive assignments since they can focus entirely on content quality rather than struggling with the physical act of typing itself.Professionals in fast paced work environments particularly benefit from efficient typing capabilities that allow them to keep pace with rapid communication demands including instant messaging email correspondence and real time collaborative documentation.The cumulative effect of these psychological and practical benefits demonstrates why typing proficiency should be considered an essential life skill deserving dedicated time and effort to develop and continuously improve throughout ones lifetime.",
+            
+            "Looking toward the future of human computer interaction we can observe fascinating trends and innovations that continue to evolve how people communicate with digital systems including voice recognition gesture controls and increasingly sophisticated artificial intelligence assistants.Despite these emerging alternatives traditional typing through physical or virtual keyboards remains the dominant method for precise detailed written communication particularly for professional academic and creative writing tasks that require careful thought and expression.Voice to text technology while continuously improving still struggles with accuracy in noisy environments technical vocabulary and the nuanced expression that skilled typists can achieve through careful word choice and precise language selection.Similarly while touch screen typing has become ubiquitous through smartphones and tablets the physical feedback and muscle memory developed through traditional keyboard typing often results in greater speed and accuracy for extended writing tasks.As virtual and augmented reality technologies continue advancing new input methods may emerge that could potentially challenge traditional typing paradigms though widespread practical adoption of such alternatives remains uncertain in the near term future.Regardless of these technological developments the fundamental cognitive and physical skills developed through mastering traditional typing including hand eye coordination pattern recognition and procedural memory formation will likely remain valuable transferable capabilities applicable across various future input methods and technologies.Investing time now in developing strong typing skills therefore represents a wise decision that will yield benefits regardless of how specific input technologies continue to evolve and transform in the coming years and decades.",
+            
+            "The global impact of widespread computer literacy and typing proficiency extends far beyond individual benefits touching upon broader economic educational and social implications that shape entire societies and cultures around the world.Countries and educational systems that prioritize teaching typing skills alongside traditional academic subjects often see improved outcomes in student productivity research capabilities and overall digital competency that translates into stronger workforce preparation for modern economies.Developing nations working to bridge the digital divide recognize that basic computer literacy including fundamental typing skills represents a crucial gateway to accessing global information networks educational resources and economic opportunities available through internet connectivity.Multinational corporations operating across diverse linguistic and cultural contexts depend on employees who can efficiently type in multiple languages navigate different keyboard layouts and adapt to various technological systems used across their global operations.The rise of remote work and distributed teams particularly accelerated by recent global events has further emphasized the critical importance of efficient written communication skills including rapid accurate typing for maintaining productivity and collaboration across time zones and physical distances.Educational institutions worldwide continue adapting their curricula to ensure students develop strong digital literacy skills including typing proficiency recognizing these competencies as essential preparation for success in an increasingly technology dependent global economy.As we move forward into an ever more interconnected digital world the fundamental skill of typing efficiently and accurately will likely remain a cornerstone competency enabling meaningful participation in global economic educational and social systems.",
+            
+            "Reflecting on the journey from complete beginner to accomplished typist reveals valuable insights applicable to skill development and personal growth in numerous other domains extending far beyond the specific context of keyboard proficiency.The initial frustration many people experience when learning to type mirrors challenges encountered when developing any new complex skill whether learning a musical instrument mastering a foreign language or acquiring specialized professional expertise.Success in typing like success in most meaningful endeavors requires embracing a growth mindset that views challenges and mistakes not as failures but as valuable learning opportunities that contribute to eventual mastery and expertise development.The concept of deliberate practice which involves focused attention specific goals and regular feedback proves essential not only for typing improvement but represents a universal principle applicable to skill acquisition across virtually any domain of human endeavor.Setting incremental achievable goals such as gradually increasing typing speed by small increments while maintaining accuracy helps maintain motivation and provides tangible evidence of progress throughout the sometimes lengthy skill development process.Celebrating small victories along the journey whether achieving a new personal best typing speed or successfully completing a challenging passage without errors helps sustain motivation during the sometimes tedious repetitive practice required for skill mastery.Ultimately the discipline patience and persistence required to master typing represent valuable life lessons that extend far beyond simply improving ones ability to communicate through written text on a computer keyboard.",
+            
+            "As we conclude this comprehensive exploration of typing mastery and its far reaching implications let us consider how this fundamental skill connects to broader themes of human potential adaptability and continuous self improvement throughout our lives.Every keystroke represents more than just producing letters on a screen it embodies the culmination of neurological adaptation physical coordination and cognitive processing that showcases the remarkable capabilities of the human mind and body working in perfect harmony.The journey toward typing mastery like many worthwhile pursuits in life requires patience consistency and genuine commitment to gradual improvement rather than expecting immediate perfection or instant results without sustained effort.Whether you are a student preparing for academic success a professional seeking career advancement or simply someone who values efficient communication the skills developed through dedicated typing practice will serve you well throughout numerous aspects of your personal and professional life.The satisfaction that comes from watching your typing speed increase your accuracy improve and your confidence grow provides intrinsic motivation that extends beyond mere practical benefits into genuine personal accomplishment and pride in skill development.As technology continues evolving and new communication methods emerge the fundamental principles underlying typing mastery focused practice patient persistence and embracing continuous improvement will remain relevant and valuable regardless of specific tools or platforms used.May your journey toward typing excellence be filled with steady progress meaningful achievements and the deep satisfaction that comes from mastering a skill that enhances your capabilities across countless personal and professional endeavors throughout your lifetime."
+        ];
+
+
+
+        // State
+        let testActive = false;
+        let currentText = '';
+        let currentInput = '';
+        let timeElapsed = 0;
+        let timeLimit = 300;
+        let timerInterval = null;
+        let totalKeystrokes = 0;
+        let correctKeystrokes = 0;
+        let selectedTimeLimit = null;
+
+        const darkModeToggle = document.getElementById('darkModeToggle');
+
+        function loadTheme() {
+            const savedDarkMode = localStorage.getItem('darkMode');
+            if (savedDarkMode === 'true') {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.classList.add('active');
+            }
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            darkModeToggle.classList.toggle('active');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        });
+
+        loadTheme();
+
+        function selectTime(seconds) {
+            timeLimit = seconds;
+            selectedTimeLimit = seconds;
+
+            const buttons = document.querySelectorAll('.time-option-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.time-option-btn').classList.add('active');
+
+            document.getElementById('customTimeInput').classList.remove('show');
+
+            setTimeout(startTest, 300);
+        }
+
+        function toggleCustomTime() {
+            const customInput = document.getElementById('customTimeInput');
+            customInput.classList.toggle('show');
+
+            if (customInput.classList.contains('show')) {
+                document.getElementById('customMinutes').focus();
+
+                const buttons = document.querySelectorAll('.time-option-btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                event.target.closest('.time-option-btn').classList.add('active');
+            }
+        }
+
+        function selectCustomTime() {
+            const minutes = parseInt(document.getElementById('customMinutes').value);
+
+            if (minutes && minutes >= 1 && minutes <= 30) {
+                timeLimit = minutes * 60;
+                selectedTimeLimit = timeLimit;
+                startTest();
+            } else {
+                alert('Please enter a valid time between 1 and 30 minutes!');
+            }
+        }
+
+        function getRandomSentence() {
+            const idx = Math.floor(Math.random() * sentences.length);
+            return sentences[idx];
+        }
+
+        function startTest() {
+            currentText = getRandomSentence();
+            currentInput = '';
+            timeElapsed = 0;
+            totalKeystrokes = 0;
+            correctKeystrokes = 0;
+            testActive = true;
+
+            document.getElementById('timeSelectorScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('testScreen').classList.remove('hidden');
+            document.getElementById('resultsScreen').classList.add('hidden');
+
+            const inputEl = document.getElementById('typingInput');
+            inputEl.value = '';
+
+            renderSentence();
+            inputEl.focus();
+            startTimer();
+        }
+
+        function renderSentence() {
+            const container = document.getElementById('sentenceDisplay');
+            container.innerHTML = '';
+
+            for (let i = 0; i < currentText.length; i++) {
+                const charEl = document.createElement('span');
+                charEl.className = 'char';
+                // Use non-breaking space for visible gap (actual comparison still uses real space)
+                charEl.textContent = currentText[i] === ' ' ? '\u00A0' : currentText[i];
+
+                if (i < currentInput.length) {
+                    if (currentInput[i] === currentText[i]) {
+                        charEl.classList.add('correct');
+                    } else {
+                        charEl.classList.add('incorrect');
+                    }
+                } else if (i === currentInput.length) {
+                    charEl.classList.add('current');
+                }
+
+                container.appendChild(charEl);
+            }
+
+            updateProgress();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeElapsed++;
+                const remainingTime = timeLimit - timeElapsed;
+
+                const minutes = Math.floor(remainingTime / 60);
+                const seconds = remainingTime % 60;
+                const timeDisplay = minutes > 0 ? minutes + 'm ' + seconds + 's' : seconds + 's';
+                document.getElementById('timeDisplay').textContent = timeDisplay;
+
+                const miniTimer = document.getElementById('miniTimer');
+                miniTimer.classList.remove('warning', 'danger');
+                if (remainingTime <= 10 && remainingTime > 0) {
+                    miniTimer.classList.add('danger');
+                } else if (remainingTime <= 30) {
+                    miniTimer.classList.add('warning');
+                }
+
+                if (remainingTime <= 0) {
+                    endTest();
+                }
+            }, 1000);
+        }
+
+        function calculateWPM() {
+            if (timeElapsed === 0) return 0;
+            const minutes = timeElapsed / 60;
+            const wordsTyped = currentInput.trim().split(/\s+/).filter(w => w.length > 0).length;
+            return Math.round(wordsTyped / minutes);
+        }
+
+        function calculateAccuracy() {
+            if (totalKeystrokes === 0) return 100;
+            return Math.round((correctKeystrokes / totalKeystrokes) * 100);
+        }
+
+        function updateProgress() {
+            const completionPercent = Math.round((currentInput.length / currentText.length) * 100);
+            document.getElementById('progressFill').style.width = completionPercent + '%';
+        }
+
+        document.getElementById('typingInput').addEventListener('input', (e) => {
+            if (!testActive) return;
+
+            const newValue = e.target.value;
+
+            if (newValue.length > currentInput.length) {
+                const newCharIndex = newValue.length - 1;
+                totalKeystrokes++;
+                if (newValue[newCharIndex] === currentText[newCharIndex]) {
+                    correctKeystrokes++;
+                } else {
+                    e.target.classList.remove('input-error');
+                    void e.target.offsetWidth;
+                    e.target.classList.add('input-error');
+                }
+            }
+
+            currentInput = newValue;
+            renderSentence();
+
+            if (currentInput.length >= currentText.length) {
+                if (currentInput === currentText) {
+                    endTest();
+                    return;
+                }
+            }
+        });
+
+        function endTest() {
+            testActive = false;
+            clearInterval(timerInterval);
+
+            const wpm = calculateWPM();
+            const accuracy = calculateAccuracy();
+
+            document.getElementById('finalWPM').textContent = wpm;
+            document.getElementById('finalAccuracy').textContent = accuracy;
+            document.getElementById('finalTime').textContent = timeElapsed;
+            document.getElementById('finalCorrect').textContent = correctKeystrokes;
+
+            document.getElementById('testScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            window.scrollTo(0, 0);
+        }
+
+        function resetTest() {
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('timeSelectorScreen').classList.remove('hidden');
+        }
+
+        function goHome() {
+            document.getElementById('timeSelectorScreen').classList.remove('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+            document.getElementById('testScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.add('hidden');
+
+            const buttons = document.querySelectorAll('.time-option-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            document.getElementById('customTimeInput').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
